@@ -5,6 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 
 @Composable
-fun Start(navController: NavHostController) {
+fun StartScreen(navController: NavHostController) {
     Text(text = "App Text!!!")
 }
