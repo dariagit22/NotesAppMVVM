@@ -3,7 +3,6 @@ package com.example.notesappmvvm.screens
 import android.app.Application
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType.Companion.Text
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,10 +30,8 @@ import com.example.notesappmvvm.navigation.NavRoute
 import com.example.notesappmvvm.ui.theme.NotesAppMVVMTheme
 
 @Composable
-fun MainScreen(navController: NavHostController) {
-    val context = LocalContext.current
-    val mViewModel: MainViewModel = viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
-    val notes = mViewModel.readTest.observeAsState(listOf()).value
+fun MainScreen(navController: NavHostController, viewModel: MainViewModel) {
+    val notes = viewModel.readAllNotes().observeAsState(listOf()).value
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -46,11 +42,6 @@ fun MainScreen(navController: NavHostController) {
             }
         }
     ) {
-//       Column() {
-//            NoteItem(title = "Note 1", subtitle = "Sub fot Note 1", navController = navController)
-//            NoteItem(title = "Note 2", subtitle = "Sub fot Note 2", navController = navController)
-//            NoteItem(title = "Note 3", subtitle = "Sub fot Note 3", navController = navController)
-//        }
         LazyColumn {
             items(notes) {
                 note -> NoteItem(note = note, navController = navController)
@@ -90,6 +81,9 @@ fun NoteItem(note: Note, navController: NavHostController) {
 @Composable
 fun PrevMainScreen() {
     NotesAppMVVMTheme {
-        MainScreen(navController = rememberNavController())
+        val context = LocalContext.current
+        val mViewModel: MainViewModel = viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
+
+        MainScreen(navController = rememberNavController(), viewModel = mViewModel)
     }
 }
