@@ -29,10 +29,9 @@ import com.example.notesappmvvm.utils.Constants
 
 @Composable
 fun AddScreen(navController: NavHostController, viewModel: MainViewModel) {
-    var title by remember { mutableStateOf("") }
-    var subtitle by remember { mutableStateOf("") }
-    var isButtonEnabled by remember { mutableStateOf(false) }
-
+    var title by remember { mutableStateOf("")}
+    var subtitle by remember { mutableStateOf("")}
+    var isButtonEnabled by remember { mutableStateOf(false)}
     Scaffold {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -47,7 +46,7 @@ fun AddScreen(navController: NavHostController, viewModel: MainViewModel) {
             )
             OutlinedTextField(
                 value = title,
-                onValueChange = {
+                onValueChange =  {
                     title = it
                     isButtonEnabled = title.isNotEmpty() && subtitle.isNotEmpty()
                 },
@@ -56,20 +55,20 @@ fun AddScreen(navController: NavHostController, viewModel: MainViewModel) {
             )
             OutlinedTextField(
                 value = subtitle,
-                onValueChange = {
+                onValueChange =  {
                     subtitle = it
                     isButtonEnabled = title.isNotEmpty() && subtitle.isNotEmpty()
                 },
                 label = { Text(text = Constants.Keys.NOTE_SUBTITLE) },
                 isError = subtitle.isEmpty()
             )
-            Button (
+            Button(
                 modifier = Modifier.padding(top = 16.dp),
                 enabled = isButtonEnabled,
                 onClick = {
-                  viewModel.addNote(note = Note(title = title, subtitle = subtitle)) {
-                      navController.navigate(NavRoute.Main.route)
-                  }
+                    viewModel.addNote(note =  Note(title = title, subtitle = subtitle)) {
+                        navController.navigate(NavRoute.Main.route)
+                    }
                 }
             ) {
                 Text(text = Constants.Keys.ADD_NOTE)
@@ -80,11 +79,11 @@ fun AddScreen(navController: NavHostController, viewModel: MainViewModel) {
 
 @Preview(showBackground = true)
 @Composable
-fun PrevAddScreen() {
+fun prevAddScreen() {
     NotesAppMVVMTheme {
         val context = LocalContext.current
-        val mViewModel: MainViewModel = viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
-
+        val mViewModel: MainViewModel =
+            viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
         AddScreen(navController = rememberNavController(), viewModel = mViewModel)
     }
 }

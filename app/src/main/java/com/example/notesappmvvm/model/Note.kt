@@ -7,11 +7,11 @@ import com.example.notesappmvvm.utils.Constants.Keys.NOTES_TABLE
 
 @Entity(tableName = NOTES_TABLE)
 data class Note(
-//    @ColumnInfo
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     @ColumnInfo
-    val title: String,
+    val title: String = "",
     @ColumnInfo
-    val subtitle: String
+    val subtitle: String = "",
+    val firebaseId:String = ""
 )

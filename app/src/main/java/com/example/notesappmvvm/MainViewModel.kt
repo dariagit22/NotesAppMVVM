@@ -2,6 +2,7 @@ package com.example.notesappmvvm
 
 import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -16,10 +17,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
 
-class MainViewModel(application: Application) : ViewModel() {
+class MainViewModel (application: Application) : AndroidViewModel(application) {
+
     private val context = application
 
-    fun initDatabase(type: String, onSuccess: () -> Unit) {
+    fun initDatabase(type: String, onSuccess: ()-> Unit) {
         Log.d("checkData", "MainViewModel initDatabase with type: $type")
         when(type) {
             TYPE_ROOM -> {
@@ -31,7 +33,7 @@ class MainViewModel(application: Application) : ViewModel() {
                 REPOSITORY = AppFirebaseRepository()
                 REPOSITORY.connectToDatabase(
                     { onSuccess() },
-                    { Log.d("checkData", "Error: $it") }
+                    { Log.d("checkData", "Error: $it")}
                 )
             }
         }
@@ -72,10 +74,10 @@ class MainViewModel(application: Application) : ViewModel() {
 
 class MainViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if(modelClass.isAssignableFrom(MainViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
             return MainViewModel(application = application) as T
         }
-        throw IllegalArgumentException("Unknown ViewModel Class")
+        throw  IllegalArgumentException("Unknown ViewModel Class")
     }
 
 }

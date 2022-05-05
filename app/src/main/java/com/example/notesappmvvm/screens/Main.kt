@@ -28,6 +28,10 @@ import com.example.notesappmvvm.MainViewModelFactory
 import com.example.notesappmvvm.model.Note
 import com.example.notesappmvvm.navigation.NavRoute
 import com.example.notesappmvvm.ui.theme.NotesAppMVVMTheme
+import com.example.notesappmvvm.utils.Constants
+import com.example.notesappmvvm.utils.DB_TYPE
+import com.example.notesappmvvm.utils.TYPE_FIREBASE
+import com.example.notesappmvvm.utils.TYPE_ROOM
 
 @Composable
 fun MainScreen(navController: NavHostController, viewModel: MainViewModel) {
@@ -38,7 +42,11 @@ fun MainScreen(navController: NavHostController, viewModel: MainViewModel) {
                 onClick = {
                     navController.navigate(NavRoute.Add.route)
                 }) {
-                Icon(imageVector = Icons.Filled.Add, contentDescription = "Add icon", tint = Color.White)
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = "Add icon",
+                    tint = Color.White
+                )
             }
         }
     ) {
@@ -52,12 +60,17 @@ fun MainScreen(navController: NavHostController, viewModel: MainViewModel) {
 
 @Composable
 fun NoteItem(note: Note, navController: NavHostController) {
+    val noteId = when(DB_TYPE) {
+        TYPE_FIREBASE -> note.firebaseId
+        TYPE_ROOM -> note.id
+        else -> Constants.Keys.EMPTY
+    }
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp, horizontal = 24.dp)
             .clickable {
-                navController.navigate(NavRoute.Note.route + "/${note.id}")
+                navController.navigate(NavRoute.Note.route + "/${noteId}")
             },
         elevation = 6.dp
     ) {
@@ -70,9 +83,7 @@ fun NoteItem(note: Note, navController: NavHostController) {
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
-            Text(
-                text = note.subtitle
-            )
+            Text(text = note.subtitle)
         }
     }
 }

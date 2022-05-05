@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun StartScreen(navController: NavHostController, viewModel: MainViewModel) {
-    val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
 
     var login by remember { mutableStateOf(Constants.Keys.EMPTY) }
@@ -71,7 +71,8 @@ fun StartScreen(navController: NavHostController, viewModel: MainViewModel) {
                             LOGIN = login
                             PASSWORD = password
                             viewModel.initDatabase(TYPE_FIREBASE) {
-                                Log.d("checkData", "Successful authentication")
+                                DB_TYPE = TYPE_FIREBASE
+                                navController.navigate(NavRoute.Main.route)
                             }
                         },
                         enabled = login.isNotEmpty() && password.isNotEmpty()
@@ -94,6 +95,7 @@ fun StartScreen(navController: NavHostController, viewModel: MainViewModel) {
                 Button (
                     onClick = {
                         viewModel.initDatabase(TYPE_ROOM) {
+                            DB_TYPE = TYPE_ROOM
                             navController.navigate(route = NavRoute.Main.route)
                         }
                     },
